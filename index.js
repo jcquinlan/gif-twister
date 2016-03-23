@@ -32,7 +32,7 @@ var height = $('#wrapper').height();
 
 var img_array = [];
 
-var url = 'http://api.giphy.com/v1/gifs/search?q=dogs&api_key=dc6zaTOxFJmzC';
+var url = 'http://api.giphy.com/v1/gifs/search?q=tree&api_key=dc6zaTOxFJmzC';
 
 // Meat of the application because the API call is async
 function getGif(){
@@ -42,17 +42,12 @@ function getGif(){
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-            copyGif(6, JSON.parse(xmlHttp.responseText).data[2].images.downsized.url);
+            copyGif(4, JSON.parse(xmlHttp.responseText).data[2].images.downsized.url);
             flipGif();
             pushImgArray();
         }
 
     }
-}
-
-// Once the url is returned, update the image element with the new src
-function setSrc(src){
-    test_img.src = src;
 }
 
 //copy the gif the number of times that the user wants, and adjust width
@@ -77,7 +72,7 @@ function flipGif(){
 function pushImgArray(){
     for(var i = 0; i < 4; i++ ){
         img_array.forEach(function(node){
-            if( i % 2 !== 0 ){
+            if( i % 1 == 0 ){
                 node.style.transform = node.style.transform + ' rotatex(180deg)';
             }
             $('#wrapper').append(node.cloneNode());
