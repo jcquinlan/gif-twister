@@ -1,0 +1,14 @@
+html, body {
+    padding:0;
+    margin:0 !important;
+}
+
+#wrapper {
+    position: relative; margin: 0 auto;
+}
+
+img {
+    line-height: 0px;
+    display: inline-block;
+    vertical-align: bottom;
+}
