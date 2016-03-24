@@ -1,30 +1,4 @@
-function getWidth() {
-  if (self.innerHeight) {
-    return self.innerWidth;
-  }
-
-  if (document.documentElement && document.documentElement.clientWidth) {
-    return document.documentElement.clientWidth;
-  }
-
-  if (document.body) {
-    return document.body.clientWidth;
-  }
-}
-
-function getHeight() {
-  if (self.innerHeight) {
-    return self.innerHeight;
-  }
-
-  if (document.documentElement && document.documentElement.clientHeight) {
-    return document.documentElement.clientHeight;
-  }
-
-  if (document.body) {
-    return document.body.clientHeight;
-  }
-}
+$(document).ready(function(){
 
 
 var width = $('#wrapper').width();
@@ -32,22 +6,28 @@ var height = $('#wrapper').height();
 
 var img_array = [];
 
-var url = 'http://api.giphy.com/v1/gifs/search?q=tree&api_key=dc6zaTOxFJmzC';
-
 // Meat of the application because the API call is async
-function getGif(){
+function getGif(search){
+    reset();
+    var url = 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC';
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-            copyGif(4, JSON.parse(xmlHttp.responseText).data[2].images.downsized.url);
+            copyGif(4, JSON.parse(xmlHttp.responseText).data[createRandom()].images.downsized.url);
             flipGif();
             pushImgArray();
         }
 
     }
+}
+
+function reset(){
+    // Resets the wrapper to fill with next gif
+    img_array = [];
+    $('#wrapper').empty();
 }
 
 //copy the gif the number of times that the user wants, and adjust width
@@ -80,5 +60,20 @@ function pushImgArray(){
     }
 }
 
-// Basically init the entire thing; begin with making API call
-getGif();
+function createRandom(){
+    return Math.floor(Math.random()*25);
+}
+
+$('#search-field').bind("enterKey",function(e){
+    var search = $('#search-field').val().trim();
+    if(search){ getGif(search); $('#search-field').val('') }
+});
+
+$('#search-field').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});
+
+}); //End the document redy jQuery function
